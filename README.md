@@ -1,3 +1,11 @@
+# commands
+
+Run Master:
+
+    docker run --rm briansetz/docker-spark:2.2.1 spark/sbin/start-master.sh
+
+
+
 # docker-spark
 [![](https://images.microbadger.com/badges/version/p7hb/docker-spark.svg)](http://microbadger.com/images/p7hb/docker-spark) ![](https://img.shields.io/docker/automated/p7hb/docker-spark.svg) [![Docker Pulls](https://img.shields.io/docker/pulls/p7hb/docker-spark.svg)](https://hub.docker.com/r/p7hb/docker-spark/) [![Size](https://images.microbadger.com/badges/image/p7hb/docker-spark.svg)](https://microbadger.com/images/p7hb/docker-spark)
 
