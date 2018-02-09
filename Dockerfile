@@ -3,19 +3,19 @@ FROM openjdk:8
 MAINTAINER Prashanth Babu <Prashanth.Babu@gmail.com>
 
 # Scala related variables.
-ARG SCALA_VERSION=2.12.2
+ARG SCALA_VERSION=2.11.12
 ARG SCALA_BINARY_ARCHIVE_NAME=scala-${SCALA_VERSION}
 ARG SCALA_BINARY_DOWNLOAD_URL=http://downloads.lightbend.com/scala/${SCALA_VERSION}/${SCALA_BINARY_ARCHIVE_NAME}.tgz
 
 # SBT related variables.
-ARG SBT_VERSION=0.13.15
+ARG SBT_VERSION=1.1.0
 ARG SBT_BINARY_ARCHIVE_NAME=sbt-$SBT_VERSION
 ARG SBT_BINARY_DOWNLOAD_URL=https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/${SBT_BINARY_ARCHIVE_NAME}.tgz
 
 # Spark related variables.
-ARG SPARK_VERSION=2.2.0
+ARG SPARK_VERSION=2.2.1
 ARG SPARK_BINARY_ARCHIVE_NAME=spark-${SPARK_VERSION}-bin-hadoop2.7
-ARG SPARK_BINARY_DOWNLOAD_URL=http://d3kbcqa49mib13.cloudfront.net/${SPARK_BINARY_ARCHIVE_NAME}.tgz
+ARG SPARK_BINARY_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
 
 # Configure env variables for Scala, SBT and Spark.
 # Also configure PATH env variable to include binary folders of Java, Scala, SBT and Spark.
