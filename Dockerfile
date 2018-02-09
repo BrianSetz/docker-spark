@@ -10,35 +10,37 @@ ARG SCALA_BINARY_DOWNLOAD_URL=http://downloads.lightbend.com/scala/${SCALA_VERSI
 # SBT related variables.
 ARG SBT_VERSION=1.1.0
 ARG SBT_BINARY_ARCHIVE_NAME=sbt-$SBT_VERSION
-ARG SBT_BINARY_DOWNLOAD_URL=https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/${SBT_BINARY_ARCHIVE_NAME}.tgz
+ARG SBT_BINARY_DOWNLOAD_URL=https://github.com/sbt/sbt/releases/download/v${SBT_VERSION}/${SBT_BINARY_ARCHIVE_NAME}.tgz
 
 # Spark related variables.
 ARG SPARK_VERSION=2.2.1
 ARG SPARK_BINARY_ARCHIVE_NAME=spark-${SPARK_VERSION}-bin-hadoop2.7
-ARG SPARK_BINARY_DOWNLOAD_URL=https://www.apache.org/dyn/closer.lua/spark/spark-2.2.1/spark-2.2.1-bin-hadoop2.7.tgz
+ARG SPARK_BINARY_DOWNLOAD_URL=http://mirror.koddos.net/apache/spark/spark-2.2.1/${SPARK_BINARY_ARCHIVE_NAME}.tgz
 
 # Configure env variables for Scala, SBT and Spark.
 # Also configure PATH env variable to include binary folders of Java, Scala, SBT and Spark.
-ENV SCALA_HOME  /usr/local/scala
-ENV SBT_HOME    /usr/local/sbt
-ENV SPARK_HOME  /usr/local/spark
+ENV SCALA_HOME  /root/scala
+ENV SBT_HOME    /root/sbt
+ENV SPARK_HOME  /root/spark
 ENV PATH        $JAVA_HOME/bin:$SCALA_HOME/bin:$SBT_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
 
 # Download, uncompress and move all the required packages and libraries to their corresponding directories in /usr/local/ folder.
-RUN apt-get -yqq update && \
-    apt-get install -yqq vim screen tmux && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/* && \
-    wget -qO - ${SCALA_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/ && \
-    wget -qO - ${SBT_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/  && \
-    wget -qO - ${SPARK_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/ && \
-    cd /usr/local/ && \
-    ln -s ${SCALA_BINARY_ARCHIVE_NAME} scala && \
-    ln -s ${SPARK_BINARY_ARCHIVE_NAME} spark && \
-    cp spark/conf/log4j.properties.template spark/conf/log4j.properties && \
-    sed -i -e s/WARN/ERROR/g spark/conf/log4j.properties && \
-    sed -i -e s/INFO/ERROR/g spark/conf/log4j.properties
+RUN apt-get -yqq update 
+RUN apt-get install -yqq vim screen tmux 
+RUN apt-get clean 
+RUN rm -rf /var/lib/apt/lists/* 
+RUN rm -rf /tmp/* 
+RUN wget -qO - ${SCALA_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/ 
+RUN wget -qO - ${SBT_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/  
+RUN wget -qO - ${SPARK_BINARY_DOWNLOAD_URL} | tar -xz -C /usr/local/ 
+RUN ln -s /usr/local/${SCALA_BINARY_ARCHIVE_NAME} /root/scala 
+RUN ln -s /usr/local/${SPARK_BINARY_ARCHIVE_NAME} /root/spark 
+RUN ln -s /usr/local/sbt /root/sbt
+RUN cp /root/spark/conf/log4j.properties.template /root/spark/conf/log4j.properties 
+RUN sed -i -e s/WARN/ERROR/g /root/spark/conf/log4j.properties 
+RUN sed -i -e s/INFO/ERROR/g /root/spark/conf/log4j.properties
+
+ENV SPARK_NO_DAEMONIZE true
 
 # We will be running our Spark jobs as `root` user.
 USER root
